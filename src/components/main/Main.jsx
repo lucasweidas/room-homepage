@@ -1,4 +1,6 @@
-import mobileHeroImg from '/assets/images/mobile-image-hero-1.jpg';
+import mobileHero1Img from '/assets/images/mobile-image-hero-1.jpg';
+import mobileHero2Img from '/assets/images/mobile-image-hero-1.jpg';
+import mobileHero3Img from '/assets/images/mobile-image-hero-1.jpg';
 import aboutDarkImg from '/assets/images/image-about-dark.jpg';
 import aboutLightImg from '/assets/images/image-about-light.jpg';
 
@@ -7,10 +9,10 @@ export default function Main() {
     <main>
       <section>
         <div>
-          <img src={mobileHeroImg} alt="" />
+          <img src={mobileHero1Img} alt="" />
         </div>
         <div>
-          <h1>Discover innovative ways to decorate</h1>
+          <h2>Discover innovative ways to decorate</h2>
           <p>
             We provide unmatched quality, comfort, and style for property owners across the country. Our experts combine form and function in bringing your
             vision to life. Create a room in your own style with our collection and make your property a reflection of you and what you love.
