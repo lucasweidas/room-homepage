@@ -24,7 +24,7 @@ This is a solution to the [Room homepage challenge on Frontend Mentor](https://w
 ### Links
 
 - Solution URL: [github.com/lucasweidas/room-homepage](https://github.com/lucasweidas/room-homepage)
-- Live Site URL: [lucasweidas.github.io//](https://lucasweidas.github.io//)
+- Live Site URL: [room-homepage.vercel](https://room-homepage-smoky.vercel.app/)
 
 ## My process
 
