@@ -138,7 +138,7 @@ export default function Main({ isLarge }) {
           <img className="w-full lg:h-full lg:object-cover" src={aboutDarkImg} alt="A bedroom with a double bed and two chairs around a table." />
         </div>
         <div className="px-8 py-12 md:max-lg:p-20 lg:flex lg:flex-col lg:justify-center xl:px-12 xl:py-16">
-          <h2 className="font-bold uppercase tracking-[0.2em]">About our furniture</h2>
+          <h2 className="font-bold uppercase tracking-[0.2em] lg:tracking-[0.5em]">About our furniture</h2>
           <p className="mt-3 text-neutral-400">
             Our multifunctional collection blends design and function to suit your individual taste. Make each room unique, or pick a cohesive theme that best
             express your interests and what inspires you. Find the furniture pieces you need, from traditional to contemporary styles or anything in between.
