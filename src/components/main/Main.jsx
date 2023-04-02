@@ -1,22 +1,83 @@
-import mobileHero1Img from '/assets/images/mobile-image-hero-1.jpg';
-import mobileHero2Img from '/assets/images/mobile-image-hero-1.jpg';
-import mobileHero3Img from '/assets/images/mobile-image-hero-1.jpg';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { sections } from './sectionsData';
 import aboutDarkImg from '/assets/images/image-about-dark.jpg';
 import aboutLightImg from '/assets/images/image-about-light.jpg';
 
+const variants = {
+  hidden: direction => {
+    return {
+      x: direction > 0 ? '100%' : '-100%',
+    };
+  },
+  visible: {
+    x: '0%',
+    zIndex: 1,
+  },
+  exit: direction => {
+    return {
+      x: direction < 0 ? '100%' : '-100%',
+      position: 'absolute',
+      inset: 0,
+      zIndex: 0,
+    };
+  },
+};
+
 export default function Main() {
+  const [[index, direction], setPage] = useState([0, 0]);
+
+  function handleChangeSection({ target }) {
+    switch (target.id) {
+      case 'previous-button':
+        setPage([index === 0 ? sections.length - 1 : index - 1, -1]);
+        break;
+      case 'next-button':
+        setPage([index === sections.length - 1 ? 0 : index + 1, 1]);
+        break;
+    }
+  }
+
   return (
     <main>
-      <section className="flex flex-col">
-        <div>
-          <img className="w-full" src={mobileHero1Img} alt="" />
+      <section className="relative flex flex-col overflow-hidden">
+        <div className="relative w-full pb-[96%]">
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.img
+              key={index}
+              className="absolute inset-0 w-full"
+              src={sections[index].images.small}
+              alt=""
+              custom={direction}
+              variants={variants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{
+                duration: 0.3,
+                ease: 'linear',
+              }}
+            />
+          </AnimatePresence>
         </div>
         <div className="relative px-8 py-14">
-          <h2 className="text-4xl font-semibold text-black">Discover innovative ways to decorate</h2>
-          <p className="mt-3 text-neutral-400">
-            We provide unmatched quality, comfort, and style for property owners across the country. Our experts combine form and function in bringing your
-            vision to life. Create a room in your own style with our collection and make your property a reflection of you and what you love.
-          </p>
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div
+              key={index}
+              custom={direction}
+              variants={variants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{
+                duration: 0.3,
+                ease: 'linear',
+              }}
+            >
+              <h2 className="text-4xl font-semibold text-black">{sections[index].title}</h2>
+              <p className="mt-3 text-neutral-400">{sections[index].description}</p>
+            </motion.div>
+          </AnimatePresence>
           <a
             className="mt-8 flex w-fit items-center gap-6 font-semibold text-black transition-colors hover:text-neutral-400 focus-visible:text-neutral-400"
             href="#"
@@ -30,20 +91,22 @@ export default function Main() {
               />
             </svg>
           </a>
-          <div className="absolute -top-14 right-0 flex">
+          <div className="absolute -top-14 right-0 z-10 flex" onClick={handleChangeSection}>
             <button
               className="flex h-14 w-14 items-center justify-center bg-black transition-colors hover:bg-neutral-700 focus-visible:bg-neutral-700"
-              aria-label="Previous product"
+              id="previous-button"
+              aria-label="Previous section"
             >
-              <svg className="h-5 w-2.5" viewBox="0 0 14 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="pointer-events-none h-5 w-2.5" viewBox="0 0 14 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M13 0L1 12l12 12" stroke="#FFF" fill="none" fillRule="evenodd" />
               </svg>
             </button>
             <button
               className="flex h-14 w-14 items-center justify-center bg-black transition-colors hover:bg-neutral-700 focus-visible:bg-neutral-700"
-              aria-label="Next product"
+              id="next-button"
+              aria-label="Next section"
             >
-              <svg className="h-5 w-2.5" viewBox="0 0 14 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="pointer-events-none h-5 w-2.5" viewBox="0 0 14 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 0l12 12L1 24" stroke="#FFF" fill="none" fillRule="evenodd" />
               </svg>
             </button>
