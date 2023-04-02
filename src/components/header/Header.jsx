@@ -1,7 +1,48 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+const isLargeSize = window.innerWidth >= 1024;
+
+const variantsTransition = {
+  duration: 0.2,
+  ease: 'linear',
+};
+const mobileGuideVariants = {
+  hidden: {
+    y: '-100%',
+    opacity: 0,
+  },
+  visible: {
+    y: '0%',
+    opacity: 1,
+    transition: variantsTransition,
+  },
+  exit: {
+    y: '-100%',
+    opacity: 0,
+    transition: variantsTransition,
+  },
+};
+const largeVariants = {
+  hidden: false,
+  visible: false,
+  exit: false,
+};
+const mobileOverlayVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: variantsTransition,
+  },
+  exit: {
+    opacity: 0,
+    transition: variantsTransition,
+  },
+};
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLarge, setIsLarge] = useState(isLargeSize);
 
   function handleToggleGuide({ target }) {
     switch (target.id) {
@@ -18,14 +59,28 @@ export default function Header() {
     }
   }
 
+  useEffect(() => {
+    function handleChange({ matches }) {
+      setIsLarge(matches);
+    }
+
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', handleChange);
+
+    () => {
+      window.matchMedia('(min-width: 64rem)').removeEventListener('change', handleChange);
+    };
+  }, []);
+
   return (
     <header className="relative">
       <nav className="absolute inset-x-0 top-0 z-30 flex items-center px-6 pt-11" onClick={handleToggleGuide}>
-        <button id="open-button" aria-label="Toggle guide" aria-haspopup="true" aria-pressed={isOpen}>
-          <svg className="pointer-events-none" width="20" height="14" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 12v2H0v-2h20zm0-6v2H0V6h20zm0-6v2H0V0h20z" fill="#FFF" fillRule="evenodd" />
-          </svg>
-        </button>
+        {!isLarge && (
+          <button id="open-button" aria-label="Toggle guide" aria-haspopup="true" aria-pressed={isOpen}>
+            <svg className="pointer-events-none" width="20" height="14" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 12v2H0v-2h20zm0-6v2H0V6h20zm0-6v2H0V0h20z" fill="#FFF" fillRule="evenodd" />
+            </svg>
+          </button>
+        )}
         <a className="mx-auto" href="./" aria-label="Homepage">
           <svg width="62" height="14" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -35,44 +90,61 @@ export default function Header() {
             />
           </svg>
         </a>
-        {isOpen && (
-          <div className="absolute inset-0 h-screen w-screen bg-[hsla(0,0%,0%,0.4)]" id="header-guide">
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-6 bg-white px-6 py-11 max-xsm:flex-col max-xsm:items-start">
-              <button id="close-button" aria-label="Close guide" aria-expanded={isOpen} aria-controls="header-guide">
-                <svg className="pointer-events-none" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M14.364.222l1.414 1.414L9.414 8l6.364 6.364-1.414 1.414L8 9.414l-6.364 6.364-1.414-1.414L6.586 8 .222 1.636 1.636.222 8 6.586 14.364.222z"
-                    fill="#000"
-                    fillRule="evenodd"
-                    opacity=".201"
-                  />
-                </svg>
-              </button>
-              <ul className="flex items-center gap-x-7 gap-y-4 max-xsm:mx-auto max-xsm:flex-col">
-                <li>
-                  <a className="font-bold lowercase" href="#">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a className="font-bold lowercase" href="#">
-                    Shop
-                  </a>
-                </li>
-                <li>
-                  <a className="font-bold lowercase" href="#">
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a className="font-bold lowercase" href="#">
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        )}
+        <AnimatePresence initial={false}>
+          {(isOpen || isLarge) && (
+            <motion.div
+              className="absolute inset-0 h-screen w-screen bg-[hsla(0,0%,0%,0.4)]"
+              id="header-guide"
+              variants={isLarge ? largeVariants : mobileOverlayVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <motion.div
+                className="flex flex-wrap items-center justify-between gap-x-4 gap-y-6 bg-white px-6 py-11 max-xsm:flex-col max-xsm:items-start"
+                variants={isLarge ? largeVariants : mobileGuideVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {!isLarge && (
+                  <button id="close-button" aria-label="Close guide" aria-expanded={isOpen} aria-controls="header-guide">
+                    <svg className="pointer-events-none" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M14.364.222l1.414 1.414L9.414 8l6.364 6.364-1.414 1.414L8 9.414l-6.364 6.364-1.414-1.414L6.586 8 .222 1.636 1.636.222 8 6.586 14.364.222z"
+                        fill="#000"
+                        fillRule="evenodd"
+                        opacity=".201"
+                      />
+                    </svg>
+                  </button>
+                )}
+                <ul className="flex items-center gap-x-7 gap-y-4 max-xsm:mx-auto max-xsm:flex-col">
+                  <li>
+                    <a className="font-bold lowercase" href="#">
+                      Home
+                    </a>
+                  </li>
+                  <li>
+                    <a className="font-bold lowercase" href="#">
+                      Shop
+                    </a>
+                  </li>
+                  <li>
+                    <a className="font-bold lowercase" href="#">
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a className="font-bold lowercase" href="#">
+                      Contact
+                    </a>
+                  </li>
+                </ul>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
     </header>
   );
