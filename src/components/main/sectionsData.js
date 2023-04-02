@@ -1,8 +1,8 @@
 export const sections = [
   {
     image: {
-      small: '/assets/images/mobile-image-hero-1.jpg',
-      large: '/assets/images/desktop-image-hero-1.jpg',
+      small: '/images/mobile-image-hero-1.jpg',
+      large: '/images/desktop-image-hero-1.jpg',
       alt: 'Three chairs around a table with an Asian tree on top.',
     },
     title: 'Discover innovative ways to decorate',
@@ -11,8 +11,8 @@ export const sections = [
   },
   {
     image: {
-      small: '/assets/images/mobile-image-hero-2.jpg',
-      large: '/assets/images/desktop-image-hero-2.jpg',
+      small: '/images/mobile-image-hero-2.jpg',
+      large: '/images/desktop-image-hero-2.jpg',
       alt: 'Three chairs: one yellow, one gray and one white.',
     },
     title: 'We are available all across the globe',
@@ -21,8 +21,8 @@ export const sections = [
   },
   {
     image: {
-      small: '/assets/images/mobile-image-hero-3.jpg',
-      large: '/assets/images/desktop-image-hero-3.jpg',
+      small: '/images/mobile-image-hero-3.jpg',
+      large: '/images/desktop-image-hero-3.jpg',
       alt: 'A black chair.',
     },
     title: 'Manufactured with the best materials',
